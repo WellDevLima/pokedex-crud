@@ -1,60 +1,75 @@
 package com.example.aulabd.controller;
-
+ 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+ 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+ 
 import com.example.aulabd.model.Pokemon;
-
-import jakarta.annotation.PostConstruct;
-
-@Repository
+import com.example.aulabd.model.PokemonService;
+ 
+@Controller
 public class PokemonController {
-
+ 
     @Autowired
-    private DataSource dataSource;
-
-    private JdbcTemplate jdbcTemplate;
-
-    @PostConstruct
-    public void initialize() {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    private ApplicationContext context;
+ 
+    private final String UPLOAD_DIR = "uploads/";
+ 
+    @GetMapping("/")
+    public String index(Model model) {
+        PokemonService ps = context.getBean(PokemonService.class);
+        ArrayList<Pokemon> pokemons = ps.listarPokemons();
+        model.addAttribute("pokemons", pokemons);
+        return "index";
     }
-
-    public void inserirPokemon(Pokemon pokemon) {
-        String sql = "INSERT INTO pokemon (nome, tipo1, tipo2, descricao, nome_arquivo_foto) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(
-            sql,
-            pokemon.getNome(),
-            pokemon.getTipo1(),
-            pokemon.getTipo2(),
-            pokemon.getDescricao(),
-            pokemon.getNomeArquivoFoto()
-        );
+ 
+    @GetMapping("/pokemon")
+    public String formPokemon(Model model) {
+        model.addAttribute("pokemon", new Pokemon());
+        return "formpokemon";
     }
-
-    public Pokemon mostrarPokemon(String uuid) {
-        String sql = "SELECT * FROM pokemon WHERE id = ?::uuid";
-        Map<String, Object> registro = jdbcTemplate.queryForMap(sql, uuid);
-        return Pokemon.converter(registro);
+ 
+    @PostMapping("/pokemon")
+    public String postPokemon(@ModelAttribute Pokemon pokemon,
+                              @RequestParam("arquivo") MultipartFile arquivo) throws IOException {
+        
+        if (!arquivo.isEmpty()) {
+            String nomeArquivo = arquivo.getOriginalFilename();
+            String caminhoCompleto = UPLOAD_DIR + nomeArquivo;
+            arquivo.transferTo(new File(caminhoCompleto));
+            pokemon.setNomeArquivoFoto(nomeArquivo);
+        }
+        
+        PokemonService ps = context.getBean(PokemonService.class);
+        ps.inserirPokemon(pokemon);
+        return "redirect:/";
     }
-
-    public List<Pokemon> listarPokemons() {
-        String sql = "SELECT * FROM pokemon";
-        List<Map<String, Object>> registros = jdbcTemplate.queryForList(sql);
-        return Pokemon.converterTodos(registros);
+ 
+    @GetMapping("/pokemon/{uuid}")
+    public String verPokemon(@PathVariable String uuid, Model model) {
+        PokemonService ps = context.getBean(PokemonService.class);
+        Pokemon pokemon = ps.mostrarPokemon(uuid);
+        model.addAttribute("pokemon", pokemon);
+        return "perfilpokemon";
     }
-
-    public ArrayList<Pokemon> buscarPorNome(String nome) {
-        String sql = "SELECT * FROM pokemon WHERE nome ILIKE '%' || ? || '%'";
-        List<Map<String, Object>> registros = jdbcTemplate.queryForList(sql, nome);
-        List<Pokemon> lista = Pokemon.converterTodos(registros);
-        return new ArrayList<>(lista);
+ 
+    @GetMapping("/buscar")
+    public String buscarPokemon(@RequestParam String nome, Model model) {
+        PokemonService ps = context.getBean(PokemonService.class);
+        ArrayList<Pokemon> pokemons = ps.buscarPorNome(nome);
+        model.addAttribute("pokemons", pokemons);
+        model.addAttribute("busca", nome);
+        return "index";
     }
 }

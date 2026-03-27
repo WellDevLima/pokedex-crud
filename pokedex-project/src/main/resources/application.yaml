@@ -17,3 +17,4 @@ spring:
     init:
       mode: always
       schema-locations: classpath:schema-postgresql.sql
+

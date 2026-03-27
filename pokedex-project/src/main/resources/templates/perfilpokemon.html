@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pokemon.nome} + ' - Pokédex'">Pokédex</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        img {
+            width: 300px;
+            height: 300px;
+            object-fit: contain;
+        }
+        .info {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${pokemon.nome}">Nome do Pokémon</h1>
+ 
+        <img th:src="@{/uploads/{nomeArquivo}(nomeArquivo=${pokemon.nomeArquivoFoto})}"
+             alt="Foto do Pokémon"/>
+ 
+        <div class="info">
+            <p><strong>ID:</strong> <span th:text="${pokemon.id}"></span></p>
+            <p><strong>Tipo 1:</strong> <span th:text="${pokemon.tipo1}"></span></p>
+            <p th:if="${pokemon.tipo2 != null and pokemon.tipo2 != ''}">
+                <strong>Tipo 2:</strong> <span th:text="${pokemon.tipo2}"></span>
+            </p>
+            <p><strong>Descrição:</strong> <span th:text="${pokemon.descricao}"></span></p>
+        </div>
+ 
+        <a th:href="@{/}">Voltar para Pokédex</a>
+    </div>
+</body>
+</html>
