@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokédex</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+        }
+        img {
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokédex</h1>
+
+    <p><a th:href="@{/pokemon}">Capturar novo Pokémon</a></p>
+
+    <form th:action="@{/buscar}" method="get">
+        <input type="text" name="nome" placeholder="Buscar por nome"/>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOME</th>
+                <th>TIPO 1</th>
+                <th>TIPO 2</th>
+                <th>DESCRIÇÃO</th>
+                <th>FOTO</th>
+                <th>AÇÃO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pokemon : ${pokemons}">
+                <td th:text="${pokemon.id}">id</td>
+                <td th:text="${pokemon.nome}">nome</td>
+                <td th:text="${pokemon.tipo1}">tipo1</td>
+                <td th:text="${pokemon.tipo2}">tipo2</td>
+                <td th:text="${pokemon.descricao}">descricao</td>
+                <td>
+                    <img th:src="@{/uploads/{nomeArquivo}(nomeArquivo=${pokemon.nomeArquivoFoto})}"
+                         width="100" height="100" alt="Foto do Pokémon"/>
+                </td>
+                <td>
+                    <a th:href="@{/pokemon/{uuid}(uuid=${pokemon.id})}"
+                       th:text="${pokemon.nome}">ver</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
