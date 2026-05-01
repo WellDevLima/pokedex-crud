@@ -8,13 +8,10 @@ spring:
     username: postgres
     password: 123
     driverClassName: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: create-drop
-
   sql:
     init:
       mode: always
       schema-locations: classpath:schema-postgresql.sql
-
