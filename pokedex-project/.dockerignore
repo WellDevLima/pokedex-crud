@@ -1,5 +1,7 @@
 .git
-target
-uploads
-.vscode
+.gitignore
 .mvn
+target
+.vscode
+uploads
+node_modules
