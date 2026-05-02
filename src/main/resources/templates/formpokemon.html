@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Pokémon - Pokédex</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background-color: #dc143c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        nav {
+            background-color: #333;
+            padding: 10px 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        
+        nav a:hover {
+            color: #dc143c;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #dc143c;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 5px rgba(220, 20, 60, 0.3);
+        }
+        
+        .info {
+            background-color: #e7f3ff;
+            color: #004085;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #b8daff;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .erro {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
+        
+        .voltar {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .voltar a {
+            color: #dc143c;
+            text-decoration: none;
+        }
+        
+        .voltar a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔴 Pokédex</h1>
+    </header>
+    
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+    
+    <div class="container">
+        <h1>✨ Adicionar Novo Pokémon</h1>
+        
+        <div class="info">
+            <strong>Como funciona:</strong><br>
+            1. Digite o <strong>nome</strong> do pokémon (em português ou inglês)<br>
+            2. Selecione uma <strong>imagem</strong> para o pokémon<br>
+            3. Clique em "Adicionar"<br>
+            4. O tipo e descrição serão preenchidos automaticamente pela API!
+        </div>
+        
+        <div th:if="${erro}" class="erro" th:text="${erro}"></div>
+        
+        <form th:action="@{/pokemon}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="nome">Nome do Pokémon: <span style="color: red;">*</span></label>
+                <input 
+                    type="text" 
+                    id="nome" 
+                    name="nome" 
+                    required 
+                    placeholder="Ex: pikachu, ditto, bulbasaur..."
+                    autocomplete="off" />
+                <small style="color: #666;">Digite o nome em inglês ou português</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="arquivo">Imagem do Pokémon: <span style="color: red;">*</span></label>
+                <input 
+                    type="file" 
+                    id="arquivo" 
+                    name="arquivo" 
+                    accept="image/*" 
+                    required />
+                <small style="color: #666;">Formatos aceitos: JPG, PNG, GIF</small>
+            </div>
+            
+            <button type="submit">Adicionar Pokémon</button>
+        </form>
+        
+        <div class="voltar">
+            <a th:href="@{/}">← Voltar para Home</a>
+        </div>
+    </div>
+</body>
+</html>
