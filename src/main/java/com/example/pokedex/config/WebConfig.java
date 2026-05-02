@@ -1,4 +1,4 @@
-package com.example.aulabd.config;
+package com.example.pokedex.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
