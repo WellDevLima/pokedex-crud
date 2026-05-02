@@ -8,13 +8,7 @@ spring:
     password: ${DB_PASSWORD}
     driverClassName: org.postgresql.Driver
 
-  jpa:
-    hibernate:
-      ddl-auto: none
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
   sql:
     init:
       mode: always
       schema-locations: classpath:schema-postgresql.sql
-      separator: ";"
