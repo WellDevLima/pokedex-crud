@@ -1,7 +1,0 @@
-.git
-.gitignore
-.mvn
-target
-.vscode
-uploads
-node_modules
