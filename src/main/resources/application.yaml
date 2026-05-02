@@ -1,12 +1,18 @@
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8081}
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driverClassName: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-postgresql.sql
