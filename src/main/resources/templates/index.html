@@ -161,7 +161,7 @@
                      onerror="this.src='https://via.placeholder.com/200?text=Sem+imagem'"/>
                 <h3 th:text="${pokemon.nome}">Nome</h3>
                 <span class="pokemon-type" th:if="${pokemon.tipo1}" th:text="${pokemon.tipo1}">Tipo</span>
-                <p th:text="${#strings.abbreviate(pokemon.descricao, 100)}">Descrição</p>
+                <p th:text="${pokemon.descricao != null ? #strings.abbreviate(pokemon.descricao, 100) : ''}">Descrição</p>
             </div>
         </div>
     </div>
