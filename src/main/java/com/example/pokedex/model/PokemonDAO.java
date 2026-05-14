@@ -26,15 +26,16 @@ public class PokemonDAO {
     }
     
     public void inserirPokemon(Pokemon pokemon) {
-        String sql = "INSERT INTO pokemon (nome, tipo1, descricao, nome_arquivo_foto, usuario_id) VALUES (?, ?, ?, ?, ?::uuid)";
-        jdbcTemplate.update(
-            sql,
-            pokemon.getNome(),
-            pokemon.getTipo1(),
-            pokemon.getDescricao(),
-            pokemon.getNomeArquivoFoto(),
-            pokemon.getUsuarioId()
-        );
+    String sql = "INSERT INTO pokemon (nome, tipo1, descricao, nome_arquivo_foto, usuario_id) VALUES (?, ?, ?, ?, CAST(? AS UUID))";
+    jdbcTemplate.update(
+        sql,
+        pokemon.getNome(),
+        pokemon.getTipo1(),
+        pokemon.getDescricao(),
+        pokemon.getNomeArquivoFoto(),
+        pokemon.getUsuarioId()
+    );
+}
     }
     
     public Pokemon buscarPorId(String id) {
