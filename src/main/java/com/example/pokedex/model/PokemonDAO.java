@@ -36,8 +36,6 @@ public class PokemonDAO {
         pokemon.getUsuarioId()
     );
 }
-    }
-    
     public Pokemon buscarPorId(String id) {
         String sql = "SELECT * FROM pokemon WHERE id = ?::uuid";
         try {
