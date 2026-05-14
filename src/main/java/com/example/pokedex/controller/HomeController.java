@@ -20,24 +20,25 @@ public class HomeController {
     private ApplicationContext context;
     
     @GetMapping("/")
-    public String home(Model model, HttpSession session) {
+public String home(Model model, HttpSession session) {
+    try {
         PokemonService pokemonService = context.getBean(PokemonService.class);
-        
-        // Listar TODOS os pokémons (vitrine pública)
         ArrayList<Pokemon> pokemons = pokemonService.listarTodos();
         model.addAttribute("pokemons", pokemons);
-        
-        // Verificar se usuário está logado
-        String usuarioId = (String) session.getAttribute("usuarioId");
-        String username = (String) session.getAttribute("username");
-        
-        if (usuarioId != null) {
-            model.addAttribute("usuarioLogado", true);
-            model.addAttribute("username", username);
-        } else {
-            model.addAttribute("usuarioLogado", false);
-        }
-        
-        return "index";
+    } catch (Exception e) {
+        model.addAttribute("pokemons", new ArrayList<>());
+    }
+
+    String usuarioId = (String) session.getAttribute("usuarioId");
+    String username = (String) session.getAttribute("username");
+
+    if (usuarioId != null) {
+        model.addAttribute("usuarioLogado", true);
+        model.addAttribute("username", username);
+    } else {
+        model.addAttribute("usuarioLogado", false);
+    }
+
+    return "index";
     }
 }
