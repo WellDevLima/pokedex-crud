@@ -39,7 +39,13 @@ public CommandLineRunner criarTabelas(JdbcTemplate jdbc) {
                 "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                 ")"
             );
-            System.out.println("✅ Tabelas criadas!");
+         System.out.println("=== VERIFICANDO TABELAS ===");
+            Integer count = jdbc.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'pokemon'", 
+                Integer.class
+            );
+            System.out.println("Tabela pokemon existe: " + (count > 0));
+
         } catch (Exception e) {
             System.out.println("Erro tabelas: " + e.getMessage());
         }
