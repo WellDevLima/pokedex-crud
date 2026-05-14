@@ -7,8 +7,3 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driverClassName: org.postgresql.Driver
-
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema-postgresql.sql
