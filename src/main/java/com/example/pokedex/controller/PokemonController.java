@@ -51,46 +51,43 @@ public class PokemonController {
         }
         
         try {
-            // Criar pasta uploads/ se não existir
-            Files.createDirectories(Paths.get(UPLOAD_DIR));
-            
-            // Validar arquivo
-            if (arquivo.isEmpty()) {
-                model.addAttribute("erro", "Selecione uma imagem!");
-                return "formpokemon";
-            }
-            
-            // Salvar arquivo
-            String nomeArquivo = System.currentTimeMillis() + "_" + arquivo.getOriginalFilename();
-            arquivo.transferTo(new File(UPLOAD_DIR + nomeArquivo));
-            
-            // Consultar API
-            PokemonService pokemonService = context.getBean(PokemonService.class);
-            PokemonAPIData dadosAPI = pokemonService.buscarDadosDaAPI(nome);
-            
-            if (dadosAPI == null) {
-                model.addAttribute("erro", "Pokémon '" + nome + "' não encontrado na API! Use o nome em inglês (ex: pikachu, bulbasaur).");
-                return "formpokemon";
-            }
-            
-            // Salvar no banco
-            Pokemon pokemon = new Pokemon(
-                nome,
-                dadosAPI.tipo1,
-                dadosAPI.descricao,
-                nomeArquivo,
-                usuarioId
-            );
-            
-            pokemonService.inserirPokemon(pokemon);
-            return "redirect:/";
-            
-        } catch (IOException e) {
-            model.addAttribute("erro", "Erro ao salvar imagem: " + e.getMessage());
-            return "formpokemon";
-        } catch (Exception e) {
-            model.addAttribute("erro", "Erro ao cadastrar: " + e.getMessage());
-            return "formpokemon";
-        }
+    // Criar pasta uploads/ se não existir
+    File uploadDir = new File(UPLOAD_DIR);
+    if (!uploadDir.exists()) {
+        uploadDir.mkdirs();
+    }
+
+    // Validar arquivo
+    if (arquivo.isEmpty()) {
+        model.addAttribute("erro", "Selecione uma imagem!");
+        return "formpokemon";
+    }
+
+    // Salvar arquivo com caminho absoluto
+    String nomeArquivo = System.currentTimeMillis() + "_" + arquivo.getOriginalFilename();
+    File destino = new File(uploadDir.getAbsolutePath() + File.separator + nomeArquivo);
+    arquivo.transferTo(destino);
+
+    // Consultar API
+    PokemonService pokemonService = context.getBean(PokemonService.class);
+    PokemonAPIData dadosAPI = pokemonService.buscarDadosDaAPI(nome);
+
+    if (dadosAPI == null) {
+        model.addAttribute("erro", "Pokémon '" + nome + "' não encontrado! Use o nome em inglês (ex: pikachu).");
+        return "formpokemon";
+    }
+
+    // Salvar no banco
+    Pokemon pokemon = new Pokemon(nome, dadosAPI.tipo1, dadosAPI.descricao, nomeArquivo, usuarioId);
+    pokemonService.inserirPokemon(pokemon);
+    return "redirect:/";
+
+} catch (IOException e) {
+    model.addAttribute("erro", "Erro ao salvar imagem: " + e.getMessage());
+    return "formpokemon";
+} catch (Exception e) {
+    model.addAttribute("erro", "Erro ao cadastrar: " + e.getMessage());
+    return "formpokemon";
+}
     }
 }
