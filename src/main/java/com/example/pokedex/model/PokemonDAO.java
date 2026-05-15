@@ -27,7 +27,7 @@ public class PokemonDAO {
     
     public void inserirPokemon(Pokemon pokemon) {
     String sql = "INSERT INTO pokemon (nome, tipo1, descricao, nome_arquivo_foto, usuario_id) " +
-                 "VALUES (?, ?, ?, ?, CAST(? AS UUID))";
+                 "VALUES (?, ?, ?, ?, ?::uuid)";
     jdbcTemplate.update(
         sql,
         pokemon.getNome(),
