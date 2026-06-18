@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS pokemon (
   tipo1 VARCHAR(50),
   tipo2 VARCHAR(50),
   descricao TEXT,
+  imagem_url TEXT,
   usuario_id UUID NOT NULL REFERENCES users(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
