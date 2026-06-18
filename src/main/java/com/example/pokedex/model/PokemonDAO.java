@@ -78,14 +78,16 @@ public class PokemonDAO {
     }
     
     public ArrayList<Pokemon> listarTodos() {
-        String sql = "SELECT * FROM pokemon ORDER BY created_at DESC";
-        List<Map<String, Object>> registros = jdbcTemplate.queryForList(sql);
-        ArrayList<Pokemon> pokemons = new ArrayList<>();
-        for (Map<String, Object> registro : registros) {
-            pokemons.add(converterParaPokemon(registro));
-        }
-        return pokemons;
+    String sql = "SELECT p.*, u.username FROM pokemon p " +
+                 "LEFT JOIN users u ON p.usuario_id = u.id " +
+                 "ORDER BY p.created_at DESC";
+    List<Map<String, Object>> registros = jdbcTemplate.queryForList(sql);
+    ArrayList<Pokemon> pokemons = new ArrayList<>();
+    for (Map<String, Object> registro : registros) {
+        pokemons.add(converterParaPokemon(registro));
     }
+    return pokemons;
+}
     
     public ArrayList<Pokemon> buscarPorUsuario(String usuarioId) {
         String sql = "SELECT * FROM pokemon WHERE usuario_id = ?::uuid ORDER BY created_at DESC";
@@ -109,8 +111,10 @@ public class PokemonDAO {
         String descricao = (String) registro.get("descricao");
         String imagemUrl = (String) registro.get("imagem_url");
         String usuarioId = registro.get("usuario_id").toString();
+        String nomeUsuario = (String) registro.get("username");
         
         Pokemon pokemon = new Pokemon(id, nome, tipo1, tipo2, descricao, imagemUrl, usuarioId);
+        pokemon.setNomeUsuario(nomeUsuario);
         return pokemon;
     }
 }
