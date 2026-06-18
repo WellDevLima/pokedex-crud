@@ -124,11 +124,13 @@ public class PokemonService {
         public String tipo1;
         public String tipo2;
         public String descricao;
+        public String imagemUrl; 
         
         public PokemonAPIData(String tipo1, String tipo2, String descricao) {
             this.tipo1 = tipo1;
             this.tipo2 = tipo2;
             this.descricao = descricao;
+            this.imagemUrl = imagemUrl;
         }
     }
 }
