@@ -26,8 +26,8 @@ public class PokemonDAO {
     }
     
     public void inserirPokemon(Pokemon pokemon) {
-        String sql = "INSERT INTO pokemon (nome, tipo1, tipo2, descricao, usuario_id) " +
-                     "VALUES (?, ?, ?, ?, ?::uuid)";
+        String sql = "INSERT INTO pokemon (nome, tipo1, tipo2, descricao, imagem_url, usuario_id) " +
+                     "VALUES (?, ?, ?, ?, ?, ?::uuid)";
         jdbcTemplate.update(
             sql,
             pokemon.getNome(),
@@ -40,7 +40,7 @@ public class PokemonDAO {
     }
     
     public void atualizarPokemon(Pokemon pokemon) {
-        String sql = "UPDATE pokemon SET nome = ?, tipo1 = ?, tipo2 = ?, descricao = ? " +
+        String sql = "UPDATE pokemon SET nome = ?, tipo1 = ?, tipo2 = ?, descricao = ?, imagem_url = ? " +
                      "WHERE id = ?::uuid AND usuario_id = ?::uuid";
         int linhasAfetadas = jdbcTemplate.update(
             sql,
