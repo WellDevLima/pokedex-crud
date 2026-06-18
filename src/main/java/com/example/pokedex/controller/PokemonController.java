@@ -51,7 +51,7 @@ public class PokemonController {
                 return "formpokemon";
             }
 
-            Pokemon pokemon = new Pokemon(nome, dadosAPI.tipo1, dadosAPI.tipo2, dadosAPI.descricao, usuarioId);
+            Pokemon pokemon = new Pokemon(nome, dadosAPI.tipo1, dadosAPI.tipo2, dadosAPI.descricao, dadosAPI.imagemUrl, usuarioId);
             pokemonService.inserirPokemon(pokemon);
             return "redirect:/";
 
