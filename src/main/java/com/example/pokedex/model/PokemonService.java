@@ -22,6 +22,14 @@ public class PokemonService {
         pokemonDAO.inserirPokemon(pokemon);
     }
     
+    public void atualizarPokemon(Pokemon pokemon) {
+        pokemonDAO.atualizarPokemon(pokemon);
+    }
+    
+    public void deletarPokemon(String id, String usuarioId) {
+        pokemonDAO.deletarPokemon(id, usuarioId);
+    }
+    
     public Pokemon buscarPorId(String id) {
         return pokemonDAO.buscarPorId(id);
     }
@@ -35,9 +43,9 @@ public class PokemonService {
     }
     
     /**
-     * Consulta a PokéAPI e retorna tipo e descrição
+     * Consulta a PokéAPI e retorna tipos e descrição
      * @param nomePokemon - nome do pokémon em minúsculas
-     * @return Map com tipo1, tipo2 e descrição, ou null se não encontrar
+     * @return PokemonAPIData com tipo1, tipo2 e descrição, ou null se não encontrar
      */
     public PokemonAPIData buscarDadosDaAPI(String nomePokemon) {
         try {
@@ -93,7 +101,6 @@ public class PokemonService {
                     }
                 }
             } catch (Exception e) {
-                // Se não conseguir a descrição, continua com o padrão
             }
             
             return new PokemonAPIData(tipo1, tipo2, descricao);
