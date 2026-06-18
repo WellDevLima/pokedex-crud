@@ -64,8 +64,7 @@
             font-weight: bold;
         }
         
-        input[type="text"],
-        input[type="file"] {
+        input[type="text"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -74,8 +73,7 @@
             box-sizing: border-box;
         }
         
-        input[type="text"]:focus,
-        input[type="file"]:focus {
+        input[type="text"]:focus {
             outline: none;
             border-color: #dc143c;
             box-shadow: 0 0 5px rgba(220, 20, 60, 0.3);
@@ -148,15 +146,14 @@
         
         <div class="info">
             <strong>Como funciona:</strong><br>
-            1. Digite o <strong>nome</strong> do pokémon (em português ou inglês)<br>
-            2. Selecione uma <strong>imagem</strong> para o pokémon<br>
-            3. Clique em "Adicionar"<br>
-            4. O tipo e descrição serão preenchidos automaticamente pela API!
+            1. Digite o <strong>nome</strong> do pokémon em inglês<br>
+            2. Clique em "Adicionar"<br>
+            3. Os tipos e descrição serão preenchidos automaticamente pela PokéAPI!
         </div>
         
         <div th:if="${erro}" class="erro" th:text="${erro}"></div>
         
-        <form th:action="@{/pokemon}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/pokemon}" method="post">
             <div class="form-group">
                 <label for="nome">Nome do Pokémon: <span style="color: red;">*</span></label>
                 <input 
@@ -166,18 +163,7 @@
                     required 
                     placeholder="Ex: pikachu, ditto, bulbasaur..."
                     autocomplete="off" />
-                <small style="color: #666;">Digite o nome em inglês ou português</small>
-            </div>
-            
-            <div class="form-group">
-                <label for="arquivo">Imagem do Pokémon: <span style="color: red;">*</span></label>
-                <input 
-                    type="file" 
-                    id="arquivo" 
-                    name="arquivo" 
-                    accept="image/*" 
-                    required />
-                <small style="color: #666;">Formatos aceitos: JPG, PNG, GIF</small>
+                <small style="color: #666;">Digite o nome em inglês</small>
             </div>
             
             <button type="submit">Adicionar Pokémon</button>
