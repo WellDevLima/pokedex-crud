@@ -11,6 +11,7 @@ public class Pokemon {
     private String descricao;
     private String imagemUrl;
     private String usuarioId;
+    private String nomeUsuario;
     
     public Pokemon() {
     }
@@ -89,5 +90,13 @@ public class Pokemon {
     
     public void setUsuarioId(String usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+    
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
     }
 }
