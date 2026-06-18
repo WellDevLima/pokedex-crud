@@ -107,9 +107,10 @@ public class PokemonDAO {
         String tipo1 = (String) registro.get("tipo1");
         String tipo2 = (String) registro.get("tipo2");
         String descricao = (String) registro.get("descricao");
+        String imagemUrl = (String) registro.get("imagem_url");
         String usuarioId = registro.get("usuario_id").toString();
         
-        Pokemon pokemon = new Pokemon(id, nome, tipo1, tipo2, descricao, usuarioId);
+        Pokemon pokemon = new Pokemon(id, nome, tipo1, tipo2, descricao, imagemUrl, usuarioId);
         return pokemon;
     }
 }
