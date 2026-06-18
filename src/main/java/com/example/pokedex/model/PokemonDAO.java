@@ -26,17 +26,45 @@ public class PokemonDAO {
     }
     
     public void inserirPokemon(Pokemon pokemon) {
-    String sql = "INSERT INTO pokemon (nome, tipo1, descricao, nome_arquivo_foto, usuario_id) " +
-                 "VALUES (?, ?, ?, ?, ?::uuid)";
-    jdbcTemplate.update(
-        sql,
-        pokemon.getNome(),
-        pokemon.getTipo1(),
-        pokemon.getDescricao(),
-        pokemon.getNomeArquivoFoto(),
-        pokemon.getUsuarioId()
-    );
-}
+        String sql = "INSERT INTO pokemon (nome, tipo1, tipo2, descricao, usuario_id) " +
+                     "VALUES (?, ?, ?, ?, ?::uuid)";
+        jdbcTemplate.update(
+            sql,
+            pokemon.getNome(),
+            pokemon.getTipo1(),
+            pokemon.getTipo2(),
+            pokemon.getDescricao(),
+            pokemon.getUsuarioId()
+        );
+    }
+    
+    public void atualizarPokemon(Pokemon pokemon) {
+        String sql = "UPDATE pokemon SET nome = ?, tipo1 = ?, tipo2 = ?, descricao = ? " +
+                     "WHERE id = ?::uuid AND usuario_id = ?::uuid";
+        int linhasAfetadas = jdbcTemplate.update(
+            sql,
+            pokemon.getNome(),
+            pokemon.getTipo1(),
+            pokemon.getTipo2(),
+            pokemon.getDescricao(),
+            pokemon.getId(),
+            pokemon.getUsuarioId()
+        );
+        
+        if (linhasAfetadas == 0) {
+            throw new RuntimeException("Pokémon não encontrado ou você não tem permissão para editar");
+        }
+    }
+    
+    public void deletarPokemon(String id, String usuarioId) {
+        String sql = "DELETE FROM pokemon WHERE id = ?::uuid AND usuario_id = ?::uuid";
+        int linhasAfetadas = jdbcTemplate.update(sql, id, usuarioId);
+        
+        if (linhasAfetadas == 0) {
+            throw new RuntimeException("Pokémon não encontrado ou você não tem permissão para deletar");
+        }
+    }
+    
     public Pokemon buscarPorId(String id) {
         String sql = "SELECT * FROM pokemon WHERE id = ?::uuid";
         try {
@@ -75,12 +103,11 @@ public class PokemonDAO {
         String id = registro.get("id").toString();
         String nome = (String) registro.get("nome");
         String tipo1 = (String) registro.get("tipo1");
+        String tipo2 = (String) registro.get("tipo2");
         String descricao = (String) registro.get("descricao");
-        String nomeArquivoFoto = (String) registro.get("nome_arquivo_foto");
         String usuarioId = registro.get("usuario_id").toString();
         
-        Pokemon pokemon = new Pokemon(nome, tipo1, descricao, nomeArquivoFoto, usuarioId);
-        pokemon.setId(id);
+        Pokemon pokemon = new Pokemon(id, nome, tipo1, tipo2, descricao, usuarioId);
         return pokemon;
     }
 }
