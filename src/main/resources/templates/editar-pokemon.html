@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pokémon - Pokédex</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background-color: #dc143c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        nav {
+            background-color: #333;
+            padding: 10px 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        
+        nav a:hover {
+            color: #dc143c;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #dc143c;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="hidden"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 5px rgba(220, 20, 60, 0.3);
+        }
+        
+        .info-display {
+            background-color: #f0f0f0;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .erro {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-salvar {
+            background-color: #28a745;
+        }
+        
+        .btn-salvar:hover {
+            background-color: #218838;
+        }
+        
+        .btn-deletar {
+            background-color: #dc143c;
+        }
+        
+        .btn-deletar:hover {
+            background-color: #a80a2a;
+        }
+        
+        .voltar {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .voltar a {
+            color: #dc143c;
+            text-decoration: none;
+        }
+        
+        .voltar a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔴 Pokédex</h1>
+    </header>
+    
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+    
+    <div class="container">
+        <h1>✏️ Editar Pokémon</h1>
+        
+        <div th:if="${erro}" class="erro" th:text="${erro}"></div>
+        
+        <form th:action="@{/pokemon/editar}" method="post">
+            <input type="hidden" name="id" th:value="${pokemon.id}" />
+            
+            <div class="form-group">
+                <label for="nome">Nome do Pokémon: <span style="color: red;">*</span></label>
+                <input 
+                    type="text" 
+                    id="nome" 
+                    name="nome" 
+                    required 
+                    th:value="${pokemon.nome}"
+                    placeholder="Ex: pikachu, ditto, bulbasaur..."
+                    autocomplete="off" />
+                <small style="color: #666;">Mude o nome para buscar novos dados na API</small>
+            </div>
+            
+            <div class="form-group">
+                <div class="info-label">Tipo 1:</div>
+                <div class="info-display info-value" th:text="${pokemon.tipo1 ?: 'Não definido'}"></div>
+            </div>
+            
+            <div class="form-group" th:if="${pokemon.tipo2}">
+                <div class="info-label">Tipo 2:</div>
+                <div class="info-display info-value" th:text="${pokemon.tipo2}"></div>
+            </div>
+            
+            <div class="form-group">
+                <div class="info-label">Descrição:</div>
+                <div class="info-display info-value" th:text="${pokemon.descricao ?: 'Sem descrição'}"></div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-salvar">💾 Salvar Alterações</button>
+            </div>
+        </form>
+        
+        <form th:action="@{/pokemon/deletar}" method="post" onsubmit="return confirm('Tem certeza que deseja deletar este pokémon?');">
+            <input type="hidden" name="id" th:value="${pokemon.id}" />
+            <button type="submit" class="btn-deletar" style="width: 100%;">🗑️ Deletar Pokémon</button>
+        </form>
+        
+        <div class="voltar">
+            <a th:href="@{/}">← Voltar para Home</a>
+        </div>
+    </div>
+</body>
+</html>
