@@ -34,6 +34,7 @@ public class PokemonDAO {
             pokemon.getTipo1(),
             pokemon.getTipo2(),
             pokemon.getDescricao(),
+            pokemon.getImagemUrl(),
             pokemon.getUsuarioId()
         );
     }
@@ -47,6 +48,7 @@ public class PokemonDAO {
             pokemon.getTipo1(),
             pokemon.getTipo2(),
             pokemon.getDescricao(),
+            pokemon.getImagemUrl(),
             pokemon.getId(),
             pokemon.getUsuarioId()
         );
