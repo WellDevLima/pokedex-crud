@@ -15,7 +15,7 @@ public class Pokemon {
     public Pokemon() {
     }
     
-    public Pokemon(String nome, String tipo1, String tipo2, String descricao, String usuarioId) {
+    public Pokemon(String nome, String tipo1, String tipo2, String descricao, String imagemUrl, String usuarioId) {
         this.id = UUID.randomUUID().toString();
         this.nome = nome;
         this.tipo1 = tipo1;
@@ -25,7 +25,7 @@ public class Pokemon {
         this.usuarioId = usuarioId;
     }
     
-    public Pokemon(String id, String nome, String tipo1, String tipo2, String descricao, String usuarioId) {
+    public Pokemon(String id, String nome, String tipo1, String tipo2, String descricao, String imagemUrl, String usuarioId) {
         this.id = id;
         this.nome = nome;
         this.tipo1 = tipo1;
