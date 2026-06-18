@@ -125,11 +125,11 @@ public class PokemonController {
                 }
             } else {
                 // Se o nome é o mesmo, mantém os dados originais
-                dadosAPI = new PokemonAPIData(pokemonExistente.getTipo1(), pokemonExistente.getTipo2(), pokemonExistente.getDescricao());
+                dadosAPI = new PokemonAPIData(pokemonExistente.getTipo1(), pokemonExistente.getTipo2(), pokemonExistente.getDescricao(), pokemonExistente.getImagemUrl());
             }
             
             // Atualiza o pokémon
-            Pokemon pokemonAtualizado = new Pokemon(id, nome, dadosAPI.tipo1, dadosAPI.tipo2, dadosAPI.descricao, usuarioId);
+            Pokemon pokemonAtualizado = new Pokemon(id, nome, dadosAPI.tipo1, dadosAPI.tipo2, dadosAPI.descricao, dadosAPI.imagemUrl, usuarioId);
             pokemonService.atualizarPokemon(pokemonAtualizado);
             return "redirect:/";
 
