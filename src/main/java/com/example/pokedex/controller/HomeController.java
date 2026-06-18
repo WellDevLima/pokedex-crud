@@ -35,6 +35,7 @@ public String home(Model model, HttpSession session) {
     if (usuarioId != null) {
         model.addAttribute("usuarioLogado", true);
         model.addAttribute("username", username);
+        model.addAttribute("usuarioIdLogado", usuarioId);
     } else {
         model.addAttribute("usuarioLogado", false);
     }
