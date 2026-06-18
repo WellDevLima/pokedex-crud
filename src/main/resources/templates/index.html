@@ -189,6 +189,8 @@
         
         <div class="pokemon-grid" th:if="!${pokemons.isEmpty()}">
             <div class="pokemon-card" th:each="pokemon : ${pokemons}">
+                <img th:if="${pokemon.imagemUrl}" th:src="${pokemon.imagemUrl}" 
+         th:alt="${pokemon.nome}" style="width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px;">
                 <h3 th:text="${pokemon.nome}">Nome</h3>
                 <span class="pokemon-type" th:if="${pokemon.tipo1}" th:text="${pokemon.tipo1}">Tipo</span>
                 <span class="pokemon-type" th:if="${pokemon.tipo2}" th:text="${pokemon.tipo2}">Tipo</span>
