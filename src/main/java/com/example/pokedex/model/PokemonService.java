@@ -102,8 +102,25 @@ public class PokemonService {
                 }
             } catch (Exception e) {
             }
+            // Extrair Imagem Pokemon
+            String imagemUrl = null;
+            try {
+                if (root.has("sprites")) {
+                        JsonNode sprites = root.get("sprites");
+                if (sprites.has("other")) {
+                        JsonNode other = sprites.get("other");
+                if (other.has("official-artwork")) {
+                        JsonNode official = other.get("official-artwork");
+                if (official.has("front_default")) {
+                    imagemUrl = official.get("front_default").asText();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
             
-            return new PokemonAPIData(tipo1, tipo2, descricao);
+            return new PokemonAPIData(tipo1, tipo2, descricao, imagemUrl);
             
         } catch (RestClientException | com.fasterxml.jackson.core.JsonProcessingException e) {
             return null;
