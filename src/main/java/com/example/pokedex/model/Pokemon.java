@@ -9,6 +9,7 @@ public class Pokemon {
     private String tipo1;
     private String tipo2;
     private String descricao;
+    private String imagemUrl;
     private String usuarioId;
     
     public Pokemon() {
@@ -20,6 +21,7 @@ public class Pokemon {
         this.tipo1 = tipo1;
         this.tipo2 = tipo2;
         this.descricao = descricao;
+        this.imagemUrl = imagemUrl;
         this.usuarioId = usuarioId;
     }
     
@@ -29,6 +31,7 @@ public class Pokemon {
         this.tipo1 = tipo1;
         this.tipo2 = tipo2;
         this.descricao = descricao;
+        this.imagemUrl = imagemUrl;
         this.usuarioId = usuarioId;
     }
     
@@ -70,6 +73,14 @@ public class Pokemon {
     
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
     
     public String getUsuarioId() {
