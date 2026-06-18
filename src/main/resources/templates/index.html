@@ -80,18 +80,13 @@
             padding: 15px;
             text-align: center;
             transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
         }
         
         .pokemon-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        .pokemon-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            margin-bottom: 10px;
         }
         
         .pokemon-card h3 {
@@ -113,6 +108,44 @@
             color: #666;
             font-size: 13px;
             line-height: 1.4;
+            flex-grow: 1;
+        }
+        
+        .pokemon-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn-editar, .btn-deletar {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-editar {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .btn-editar:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-deletar {
+            background-color: #dc143c;
+            color: white;
+        }
+        
+        .btn-deletar:hover {
+            background-color: #a80a2a;
         }
         
         .vazio {
@@ -156,12 +189,17 @@
         
         <div class="pokemon-grid" th:if="!${pokemons.isEmpty()}">
             <div class="pokemon-card" th:each="pokemon : ${pokemons}">
-                <img th:src="@{/uploads/{nomeArquivo}(nomeArquivo=${pokemon.nomeArquivoFoto})}" 
-                     th:alt="${pokemon.nome}" 
-                     onerror="this.src='https://via.placeholder.com/200?text=Sem+imagem'"/>
                 <h3 th:text="${pokemon.nome}">Nome</h3>
                 <span class="pokemon-type" th:if="${pokemon.tipo1}" th:text="${pokemon.tipo1}">Tipo</span>
-                <p th:text="${pokemon.descricao != null ? #strings.abbreviate(pokemon.descricao, 100) : ''}">Descrição</p>
+                <span class="pokemon-type" th:if="${pokemon.tipo2}" th:text="${pokemon.tipo2}">Tipo</span>
+                <p th:text="${pokemon.descricao != null ? #strings.abbreviate(pokemon.descricao, 100) : 'Sem descrição'}">Descrição</p>
+                <div class="pokemon-buttons">
+                    <a th:href="@{/pokemon/editar(id=${pokemon.id})}" class="btn-editar">✏️ Editar</a>
+                    <form th:action="@{/pokemon/deletar}" method="post" style="flex: 1;" onsubmit="return confirm('Tem certeza que deseja deletar este pokémon?');">
+                        <input type="hidden" name="id" th:value="${pokemon.id}" />
+                        <button type="submit" class="btn-deletar" style="width: 100%; margin: 0;">🗑️ Deletar</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
