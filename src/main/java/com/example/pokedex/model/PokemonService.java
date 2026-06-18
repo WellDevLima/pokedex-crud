@@ -45,7 +45,7 @@ public class PokemonService {
     /**
      * Consulta a PokéAPI e retorna tipos e descrição
      * @param nomePokemon - nome do pokémon em minúsculas
-     * @return PokemonAPIData com tipo1, tipo2 e descrição, ou null se não encontrar
+     * @return PokemonAPIData com tipo1, tipo2, descrição e imagem, ou null se não encontrar
      */
     public PokemonAPIData buscarDadosDaAPI(String nomePokemon) {
         try {
@@ -77,7 +77,7 @@ public class PokemonService {
                 }
             }
             
-            // Extrair descrição da espécie (é outro endpoint)
+            // Extrair descrição da espécie
             String descricao = "Pokémon desconhecido";
             try {
                 if (root.has("species")) {
@@ -85,7 +85,6 @@ public class PokemonService {
                     String speciesResponse = restTemplate.getForObject(speciesUrl, String.class);
                     JsonNode speciesRoot = objectMapper.readTree(speciesResponse);
                     
-                    // Tentar pegar descrição em português ou inglês
                     if (speciesRoot.has("flavor_text_entries")) {
                         JsonNode flavorTexts = speciesRoot.get("flavor_text_entries");
                         for (int i = 0; i < flavorTexts.size(); i++) {
@@ -101,28 +100,32 @@ public class PokemonService {
                     }
                 }
             } catch (Exception e) {
+                System.err.println("Erro ao buscar descrição: " + e.getMessage());
             }
+            
             // Extrair Imagem Pokemon
             String imagemUrl = null;
             try {
                 if (root.has("sprites")) {
-                        JsonNode sprites = root.get("sprites");
-                if (sprites.has("other")) {
+                    JsonNode sprites = root.get("sprites");
+                    if (sprites.has("other")) {
                         JsonNode other = sprites.get("other");
-                if (other.has("official-artwork")) {
-                        JsonNode official = other.get("official-artwork");
-                if (official.has("front_default")) {
-                    imagemUrl = official.get("front_default").asText();
+                        if (other.has("official-artwork")) {
+                            JsonNode official = other.get("official-artwork");
+                            if (official.has("front_default")) {
+                                imagemUrl = official.get("front_default").asText();
                             }
                         }
                     }
                 }
             } catch (Exception e) {
+                System.err.println("Erro ao buscar imagem: " + e.getMessage());
             }
             
             return new PokemonAPIData(tipo1, tipo2, descricao, imagemUrl);
             
         } catch (RestClientException | com.fasterxml.jackson.core.JsonProcessingException e) {
+            System.err.println("Erro ao buscar dados da API: " + e.getMessage());
             return null;
         }
     }
@@ -143,7 +146,7 @@ public class PokemonService {
         public String descricao;
         public String imagemUrl; 
         
-        public PokemonAPIData(String tipo1, String tipo2, String descricao) {
+        public PokemonAPIData(String tipo1, String tipo2, String descricao, String imagemUrl) {
             this.tipo1 = tipo1;
             this.tipo2 = tipo2;
             this.descricao = descricao;
